@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Contacto;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/contacto', function () {
-    return view('contacto');
+Route::get('/contacto/{tipo?}', function ($tipo = null) {
+    //dd($tipo);
+    //existe $tipo
+    return view('contacto', compact('tipo'));
+    //->with(['tipo' -> $tipo]);
+});
+
+Route::post('/validar-contacto', function (Request $request) {
+    $contacto = new Contacto();
+    //aceder a atributos:
+    $contacto->nombre = $request->nombre;
+    $contacto->correo = $request->correo;
+    $contacto->comentario = $request->comentario;
+
+    //hacer la insersion a la base de datos
+    $contacto->save();
+
+    return redirect()->back();
 });
