@@ -11,21 +11,35 @@
         {{ $tipo }}
     </h3>
 
+    {{-- @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif --}}
+
     <form method="post" action="validar-contacto">
         @csrf
         <label for="nombre">Nombre: </label><input type="text" name="nombre"><br>
         <label for="correo">Email: </label>
         <input 
-            type="email"
+            type="text"
             name="correo">
-            @if($tipo == 'alumno')
-                value ="@alumnos.udg.mx"
-            @else
-                value ="@gmail.com"
-            @endif
-        >
         <br>
+
+        @error('correo')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+
         <label for="comentario">Mensaje: </label><textarea name="comentario"></textarea><br>
+        
+        @error('comentario')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        
         <input type="submit" value="Enviar">
     </form>
 </body>
